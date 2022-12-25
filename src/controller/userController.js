@@ -20,13 +20,29 @@ router.post("", async (req, res) => {
     )
 });
 router.get("", async (req, res) => {
-    connectDb.query(
-        "SELECT * FROM users ",
-        (err, result) => {
-            if (err) throw err;
-            res.send(result);
-        }
-    )
+    const { country, page, limit } = req.query;
+    // console.log(page, limit);
+    
+    if (country) {
+        connectDb.query(
+            'SELECT * FROM users WHERE country= ?  ',
+            [country],
+            (err, result) => {
+                if (err) throw err;
+                res.send(result);
+            }
+        )
+    }
+    else {
+        connectDb.query(
+            'SELECT * FROM users',
+            (err, result) => {
+                if (err) throw err;
+                res.send(result);
+            }
+        )
+    }
+    
 
 });
 
